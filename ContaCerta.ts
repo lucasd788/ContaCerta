@@ -1,14 +1,14 @@
 enum MeioDePagamento {
-  DINHEIRO = 'DINHEIRO',
-  PIX = 'PIX',
-  DEBITO = 'DEBITO',
-  CREDITO = 'CREDITO',
+  DINHEIRO = "DINHEIRO",
+  PIX = "PIX",
+  DEBITO = "DEBITO",
+  CREDITO = "CREDITO",
 }
 
 enum TipoRelatorio {
-  MENSAL = 'MENSAL',
-  ANUAL = 'ANUAL',
-  PERSONALIZADO = 'PERSONALIZADO',
+  MENSAL = "MENSAL",
+  ANUAL = "ANUAL",
+  PERSONALIZADO = "PERSONALIZADO",
 }
 
 class Categoria {
@@ -74,8 +74,7 @@ class Gasto {
   }
 
   calcularTotalParcelas(): number {
-    // implementação futura
-    return 0;
+    return this.parcelas.reduce((total, p) => total + p.valor, 0);
   }
 }
 
@@ -120,7 +119,8 @@ class Fatura {
   }
 
   adicionarGasto(gasto: Gasto): void {
-    // implementação futura
+    this.gastos.push(gasto);
+    this.total += gasto.valor;
   }
 }
 
@@ -140,16 +140,16 @@ class Usuario {
   }
 
   adicionarGasto(gasto: Gasto): void {
-    // implementação futura
+    this.gastos.push(gasto);
   }
 
   adicionarCartao(cartao: Cartao): void {
-    // implementação futura
+    this.cartoes.push(cartao);
   }
 
   gerarRelatorio(): Relatorio {
-    // implementação futura
-    return new Relatorio(this, new Date(), TipoRelatorio.MENSAL, '');
+    const dados = `Relatório de ${this.nome} com ${this.gastos.length} gastos`;
+    return new Relatorio(this, new Date(), TipoRelatorio.MENSAL, dados);
   }
 }
 
@@ -159,7 +159,12 @@ class Relatorio {
   tipo: TipoRelatorio;
   dados: string;
 
-  constructor(usuario: Usuario, data_geracao: Date, tipo: TipoRelatorio, dados: string) {
+  constructor(
+    usuario: Usuario,
+    data_geracao: Date,
+    tipo: TipoRelatorio,
+    dados: string
+  ) {
     this.usuario = usuario;
     this.data_geracao = data_geracao;
     this.tipo = tipo;
@@ -167,8 +172,9 @@ class Relatorio {
   }
 
   gerar(): string {
-    // implementação futura
-    return '';
+    return `Relatório ${
+      this.tipo
+    } - ${this.data_geracao.toLocaleDateString()}:\n${this.dados}`;
   }
 }
 
@@ -180,35 +186,33 @@ class FiltroGastos {
   }
 
   filtrarPorCartao(cartao: Cartao): Gasto[] {
-    // implementação futura
-    return [];
+    return this.gastos.filter((g) => g.cartao === cartao);
   }
 
   filtrarPorPessoa(usuario: Usuario): Gasto[] {
-    // implementação futura
-    return [];
+    return this.gastos.filter((g) => g.usuarioResponsavel === usuario);
   }
 
   filtrarPorPeriodo(inicio: Date, fim: Date): Gasto[] {
-    // implementação futura
-    return [];
+    return this.gastos.filter((g) => g.data >= inicio && g.data <= fim);
   }
 }
 
 class Exportador {
   gerarRelatorio(relatorio: Relatorio): string {
-    // implementação futura
-    return '';
+    return relatorio.gerar();
   }
 
   exportarTXT(relatorio: Relatorio): string {
-    // implementação futura
-    return '';
+    return `TXT:\n${relatorio.gerar()}`;
   }
 
   exportarCSV(relatorio: Relatorio): string {
-    // implementação futura
-    return '';
+    return `CSV:\nusuario,data,tipo,dados\n${
+      relatorio.usuario.nome
+    },${relatorio.data_geracao.toISOString()},${relatorio.tipo},"${
+      relatorio.dados
+    }"`;
   }
 }
 
@@ -220,7 +224,13 @@ class DivisaoDeConta {
   }
 
   dividirConta(gasto: Gasto): Map<Usuario, number> {
-    // implementação futura
-    return new Map<Usuario, number>();
+    const resultado = new Map<Usuario, number>();
+    const valorPorPessoa = gasto.valor / this.participantes.length;
+
+    this.participantes.forEach((usuario) => {
+      resultado.set(usuario, valorPorPessoa);
+    });
+
+    return resultado;
   }
 }
