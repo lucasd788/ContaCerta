@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MeioDePagamento {
+  DINHEIRO
+  PIX
+  DEBITO
+  CREDITO
+}
+
+enum TipoRelatorio {
+  MENSAL
+  ANUAL
+  PERSONALIZADO
+}
+
+model Categoria {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  descricao String?
+  gastos    Gasto[]
+}
+
+model Usuario {
+  id        Int         @id @default(autoincrement())
+  nome      String
+  email     String      @unique
+  senha     String
+  gastos    Gasto[]
+  cartoes   Cartao[]
+  Relatorio Relatorio[]
+}
+
+model Cartao {
+  id                     Int      @id @default(autoincrement())
+  banco                  String
+  ultimos_quatro_digitos String?
+  limite_total           Float
+  limite_restante        Float
+  usuario                Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId              Int
+  faturas                Fatura[]
+  Gasto                  Gasto[]
+}
+
+model Gasto {
+  id            Int             @id @default(autoincrement())
+  valor         Float
+  descricao     String
+  data          DateTime
+  meioPagamento MeioDePagamento
+  numParcelas   Int             @default(1)
+  usuario       Usuario         @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+  categoria     Categoria?      @relation(fields: [categoriaId], references: [id])
+  categoriaId   Int?
+  cartao        Cartao?         @relation(fields: [cartaoId], references: [id])
+  cartaoId      Int?
+  parcelas      Parcela[]
+  fatura        Fatura?         @relation(fields: [faturaId], references: [id])
+  faturaId      Int?
+}
+
+model Parcela {
+  id              Int      @id @default(autoincrement())
+  valor           Float
+  data_vencimento DateTime
+  paga            Boolean  @default(false)
+  numeroParcela   Int
+  totalParcelas   Int
+  gasto           Gasto    @relation(fields: [gastoId], references: [id])
+  gastoId         Int
+}
+
+model Fatura {
+  id            Int      @id @default(autoincrement())
+  cartao        Cartao   @relation(fields: [cartaoId], references: [id])
+  cartaoId      Int
+  mes_referente DateTime
+  vencimento    DateTime
+  total         Float    @default(0)
+  gastos        Gasto[]
+}
+
+model Relatorio {
+  id           Int           @id @default(autoincrement())
+  usuario      Usuario       @relation(fields: [usuarioId], references: [id])
+  usuarioId    Int
+  data_geracao DateTime
+  tipo         TipoRelatorio
+  dados        String
+}

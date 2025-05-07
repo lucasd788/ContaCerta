@@ -1,7 +1,7 @@
 {
   "name": "contacerta",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,10 +10,17 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
-    "@types/prompt-sync": "^4.2.3"
+    "@types/node": "^22.15.15",
+    "@types/prompt-sync": "^4.2.3",
+    "prisma": "^6.7.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
   }
 }

@@ -11,6 +11,8 @@ enum TipoRelatorio {
   PERSONALIZADO = "PERSONALIZADO",
 }
 
+const _faturas: Fatura[] = [];
+
 class Categoria {
   nome: string;
   descricao?: string;
@@ -31,7 +33,7 @@ class Parcela {
   constructor(
     valor: number,
     data_vencimento: Date,
-    paga: boolean,
+    paga: boolean = false,
     numeroParcela: number,
     totalParcelas: number
   ) {
@@ -49,9 +51,10 @@ class Gasto {
   data: Date;
   meioPagamento: MeioDePagamento;
   categoria?: Categoria;
-  parcelas: Parcela[];
+  numParcelas: number;
   usuarioResponsavel: Usuario;
   cartao?: Cartao;
+  parcelas: Parcela[];
 
   constructor(
     valor: number,
@@ -59,22 +62,90 @@ class Gasto {
     data: Date,
     meioPagamento: MeioDePagamento,
     usuarioResponsavel: Usuario,
-    parcelas: Parcela[] = [],
+    numParcelas: number = 1,
     categoria?: Categoria,
     cartao?: Cartao
   ) {
+    if (numParcelas < 1) numParcelas = 1;
+    if (valor <= 0) throw new Error("Valor deve ser positivo");
+    if (
+      (meioPagamento === MeioDePagamento.CREDITO ||
+        meioPagamento === MeioDePagamento.DEBITO) &&
+      !cartao
+    )
+      throw new Error(
+        "Cartão é obrigatório para pagamento no crédito OU débito"
+      );
+
+    if (numParcelas > 1 && meioPagamento !== MeioDePagamento.CREDITO)
+      throw new Error("Parcelamento só é permitido no crédito");
+
     this.valor = valor;
     this.descricao = descricao;
     this.data = data;
     this.meioPagamento = meioPagamento;
     this.usuarioResponsavel = usuarioResponsavel;
-    this.parcelas = parcelas;
+    this.numParcelas = numParcelas;
     this.categoria = categoria;
     this.cartao = cartao;
+    this.parcelas = [];
+
+    this.criarParcelas();
+    this.adicionarNasFaturas();
   }
 
-  calcularTotalParcelas(): number {
-    return this.parcelas.reduce((total, p) => total + p.valor, 0);
+  private criarParcelas(): void {
+    const valorParcela = this.valor / this.numParcelas;
+
+    for (let i = 1; i <= this.numParcelas; i++) {
+      const dataVencimento = this.calcularDataVencimentoParcela(i);
+      this.parcelas.push(
+        new Parcela(valorParcela, dataVencimento, false, i, this.numParcelas)
+      );
+    }
+  }
+
+  private calcularDataVencimentoParcela(numeroParcela: number): Date {
+    const data = new Date(this.data);
+    data.setMonth(data.getMonth() + numeroParcela - 1);
+    return data;
+  }
+
+  private adicionarNasFaturas(): void {
+    for (const parcela of this.parcelas) {
+      const mesReferente = new Date(parcela.data_vencimento);
+      mesReferente.setDate(1); // Primeiro dia do mês
+
+      const vencimento = new Date(mesReferente);
+      vencimento.setMonth(vencimento.getMonth() + 1); // Vencimento no mês seguinte
+      vencimento.setDate(10); // Dia 10 do mês seguinte (exemplo)
+
+      let faturaExistente = _faturas.find(
+        (f) =>
+          f.cartao === this.cartao &&
+          f.mes_referente.getTime() === mesReferente.getTime()
+      );
+
+      if (!faturaExistente) {
+        faturaExistente = new Fatura(this.cartao!, mesReferente, vencimento, 0);
+        _faturas.push(faturaExistente);
+      }
+
+      const gastoParcela = new Gasto(
+        parcela.valor,
+        `${this.descricao} (${parcela.numeroParcela}/${parcela.totalParcelas})`,
+        this.data,
+        this.meioPagamento,
+        this.usuarioResponsavel,
+        1,
+        this.categoria,
+        this.cartao
+      );
+
+      gastoParcela.parcelas = [];
+
+      faturaExistente.adicionarGasto(gastoParcela);
+    }
   }
 }
 
@@ -90,6 +161,9 @@ class Cartao {
     limite_restante: number,
     ultimos_quatro_digitos?: string
   ) {
+    if (limite_total <= 0) throw new Error("Limite total deve ser positivo");
+    if (limite_restante > limite_total)
+      throw new Error("Limite restante inválido");
     this.banco = banco;
     this.limite_total = limite_total;
     this.limite_restante = limite_restante;
