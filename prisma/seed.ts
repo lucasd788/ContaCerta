@@ -111,7 +111,6 @@ async function atualizarFaturaIndividual(
 }
 
 async function main() {
-  await prisma.$executeRaw`TRUNCATE TABLE "Relatorio", "Fatura", "Parcela", "Gasto", "Cartao", "Usuario", "Categoria" CASCADE`;
   const usuario1 = await prisma.usuario.create({
     data: {
       nome: "Lucas Dias",
