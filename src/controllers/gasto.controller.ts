@@ -8,7 +8,7 @@ type AsyncHandler = (
     next: NextFunction
 ) => Promise<any>;
 
-export const criarGasto: AsyncHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const criarGasto: AsyncHandler = async (req, res, next) => {
     try {
         const { valor, descricao, data, meioPagamento, usuarioId, categoriaId, cartaoId, numParcelas, divisaoDeGastoId } = req.body;
 
@@ -42,7 +42,7 @@ export const criarGasto: AsyncHandler = async (req: Request, res: Response, next
     }
 };
 
-export const listarGastos: AsyncHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const listarGastos: AsyncHandler = async (req, res, next) => {
     try {
         const { usuarioId } = req.params;
         const gastos = await GastoRepository.obterGastosPorUsuario(Number(usuarioId));
@@ -52,7 +52,7 @@ export const listarGastos: AsyncHandler = async (req: Request, res: Response, ne
     }
 };
 
-export const obterGasto: AsyncHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const obterGasto: AsyncHandler = async (req, res, next) => {
     try {
         const { id } = req.params;
         const gasto = await GastoRepository.obterGastoPorId(Number(id));
@@ -67,7 +67,7 @@ export const obterGasto: AsyncHandler = async (req: Request, res: Response, next
     }
 };
 
-export const atualizarGasto: AsyncHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const atualizarGasto: AsyncHandler = async (req, res, next) => {
     try {
         const { id } = req.params;
         const dadosAtualizacao = req.body;
@@ -83,7 +83,7 @@ export const atualizarGasto: AsyncHandler = async (req: Request, res: Response, 
     }
 };
 
-export const deletarGasto: AsyncHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const deletarGasto: AsyncHandler = async (req, res, next) => {
     try {
         const { id } = req.params;
         const gastoDeletado = await GastoRepository.deletarGasto(Number(id));

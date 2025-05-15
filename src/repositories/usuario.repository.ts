@@ -32,6 +32,15 @@ export const obterUsuarioPorEmail = async (email: string): Promise<Usuario | nul
     });
 };
 
+export const buscarUsuarios = async (filtro: { nome?: string; email?: string }): Promise<Usuario[]> => {
+    return prisma.usuario.findMany({
+        where: {
+            ...(filtro.nome && { nome: { contains: filtro.nome, mode: 'insensitive' } }),
+            ...(filtro.email && { email: { contains: filtro.email, mode: 'insensitive' } }),
+        },
+    });
+};
+
 export const atualizarUsuario = async (id: number, data: {
     nome?: string;
     email?: string;

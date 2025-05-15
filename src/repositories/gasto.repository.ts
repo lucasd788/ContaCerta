@@ -87,7 +87,7 @@ export const deletarGasto = async (id: number): Promise<Gasto> => {
         include: { cartao: true },
     });
 
-    if (gasto.cartao && (gasto.meioPagamento === MeioDePagamento.CREDITO || gasto.meioPagamento === MeioDePagamento.DEBITO)) {
+    if (gasto.cartao && gasto.meioPagamento === MeioDePagamento.CREDITO) {
         await prisma.cartao.update({
             where: { id: gasto.cartao.id },
             data: { limiteRestante: { increment: gasto.valor } },
