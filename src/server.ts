@@ -11,10 +11,13 @@ import faturaRoutes from './routes/fatura.route';
 import relatorioRoutes from './routes/relatorio.route';
 import notificacaoRoutes from './routes/notificacao.route';
 import divisaoDeGastoRoutes from './routes/divisaoDeGasto.route';
+import authRoutes from './routes/auth.route';
+import { authMiddleware } from './middlewares/auth.middleware';
+
 
 const app = express();
-app.use(express.json());
 
+app.use(express.json());
 const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
@@ -23,14 +26,34 @@ const swaggerOptions = {
             version: '1.0.0',
             description: 'API para gerenciar dados financeiros pessoais',
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
+        security: [
+            {
+                bearerAuth: [],
+            },
+        ],
     },
+
     apis: ['./src/schemas/*.ts'],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Rotas principais
+app.get('/', (req, res) => {
+    res.redirect('/docs');
+});
+
+app.use('/auth', authRoutes);
+app.use(authMiddleware);
 app.use('/usuarios', usuarioRoutes);
 app.use('/categorias', categoriaRoutes);
 app.use('/cartoes', cartaoRoutes);
@@ -41,9 +64,6 @@ app.use('/relatorios', relatorioRoutes);
 app.use('/notificacoes', notificacaoRoutes);
 app.use('/divisoes-de-gasto', divisaoDeGastoRoutes);
 
-app.get('/', (req, res) => {
-    res.json({ message: 'API ContaCerta rodando!' });
-});
 
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
     console.error(err);

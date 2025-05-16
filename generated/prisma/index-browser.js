@@ -181,6 +181,7 @@ exports.Prisma.FaturaScalarFieldEnum = {
   cartaoId: 'cartaoId',
   mesReferente: 'mesReferente',
   vencimento: 'vencimento',
+  valorTotal: 'valorTotal',
   paga: 'paga',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

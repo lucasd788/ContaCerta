@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
     criarFatura,
     obterFatura,
+    listarFaturas,
     listarFaturasPorCartao,
     atualizarFatura,
     deletarFatura
@@ -10,6 +11,7 @@ import {
 const router = Router();
 
 router.post('/', criarFatura);
+router.get('/', listarFaturas);
 router.get('/:id', obterFatura);
 router.get('/cartao/:cartaoId', listarFaturasPorCartao);
 router.put('/:id', atualizarFatura);

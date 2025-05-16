@@ -33,6 +33,15 @@ export const obterNotificacao: AsyncHandler = async (req, res, next) => {
     }
 };
 
+export const listarNotificacoes: AsyncHandler = async (req, res, next) => {
+    try {
+        const notificacoes = await NotificacaoRepository.listarNotificacoes();
+        res.json(notificacoes);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const listarNotificacoesPorUsuario: AsyncHandler = async (req, res, next) => {
     try {
         const { usuarioId } = req.params;

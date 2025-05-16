@@ -29,7 +29,16 @@ export const criarCartao: AsyncHandler = async (req, res, next) => {
     }
 };
 
-export const listarCartoesUsuario: AsyncHandler = async (req, res, next) => {
+export const listarCartoes: AsyncHandler = async (req, res, next) => {
+    try {
+        const cartoes = await CartaoRepository.listarCartoes();
+        res.json(cartoes);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const listarCartoesPorUsuario: AsyncHandler = async (req, res, next) => {
     try {
         const { usuarioId } = req.params;
         const cartoes = await CartaoRepository.obterCartoesPorUsuario(Number(usuarioId));

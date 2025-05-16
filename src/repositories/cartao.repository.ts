@@ -41,6 +41,16 @@ export const obterCartoesPorUsuario = async (usuarioId: number): Promise<Cartao[
     });
 };
 
+export const listarCartoes = async (): Promise<Cartao[]> => {
+    return prisma.cartao.findMany({
+        include: {
+            usuario: true,
+            gastos: true,
+            faturas: true
+        }
+    });
+};
+
 export const atualizarCartao = async (id: number, data: {
     limiteTotal?: number;
     limiteRestante?: number;

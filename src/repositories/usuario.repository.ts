@@ -32,6 +32,15 @@ export const obterUsuarioPorEmail = async (email: string): Promise<Usuario | nul
     });
 };
 
+export const listarUsuarios = async (): Promise<Usuario[]> => {
+    return prisma.usuario.findMany({
+        include: {
+            gastos: true,
+            cartoes: true
+        }
+    });
+};
+
 export const buscarUsuarios = async (filtro: { nome?: string; email?: string }): Promise<Usuario[]> => {
     return prisma.usuario.findMany({
         where: {
@@ -55,14 +64,5 @@ export const atualizarUsuario = async (id: number, data: {
 export const deletarUsuario = async (id: number): Promise<Usuario> => {
     return prisma.usuario.delete({
         where: { id }
-    });
-};
-
-export const listarUsuarios = async (): Promise<Usuario[]> => {
-    return prisma.usuario.findMany({
-        include: {
-            gastos: true,
-            cartoes: true
-        }
     });
 };

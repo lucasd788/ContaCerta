@@ -31,7 +31,20 @@ export const obterFatura: AsyncHandler = async (req, res, next) => {
         if (!fatura) {
             return res.status(404).json({ error: 'Fatura não encontrada' });
         }
-        res.json(fatura);
+        const parcelas = (fatura as any).parcelas ?? [];
+        const valorTotal = Array.isArray(parcelas)
+            ? parcelas.reduce((soma, parcela) => soma + parcela.valor, 0)
+            : 0;
+        res.json({ ...fatura, parcelas, valorTotal });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const listarFaturas: AsyncHandler = async (req, res, next) => {
+    try {
+        const faturas = await FaturaRepository.listarFaturas();
+        res.json(faturas);
     } catch (error) {
         next(error);
     }

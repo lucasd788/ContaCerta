@@ -1,6 +1,18 @@
 /**
  * @openapi
  * /relatorios:
+ *   get:
+ *     tags: [Relatorios]
+ *     summary: Lista todos os relatórios
+ *     responses:
+ *       200:
+ *         description: Lista de relatórios
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Relatorio'
  *   post:
  *     tags: [Relatorios]
  *     summary: Cria um novo relatório

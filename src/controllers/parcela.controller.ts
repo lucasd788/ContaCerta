@@ -40,6 +40,15 @@ export const obterParcela: AsyncHandler = async (req, res, next) => {
     }
 };
 
+export const listarParcelas: AsyncHandler = async (req, res, next) => {
+    try {
+        const parcelas = await ParcelaRepository.listarParcelas();
+        res.json(parcelas);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const listarParcelasPorGasto: AsyncHandler = async (req, res, next) => {
     try {
         const { gastoId } = req.params;

@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import {
     criarCartao,
-    listarCartoesUsuario,
+    listarCartoes,
+    listarCartoesPorUsuario,
     obterCartao,
     atualizarCartao,
     ajustarLimite,
@@ -11,7 +12,8 @@ import {
 const router = Router();
 
 router.post('/', criarCartao);
-router.get('/usuario/:usuarioId', listarCartoesUsuario);
+router.get('/', listarCartoes);
+router.get('/usuario/:usuarioId', listarCartoesPorUsuario);
 router.get('/:id', obterCartao);
 router.put('/:id', atualizarCartao);
 router.patch('/:id/limite', ajustarLimite);

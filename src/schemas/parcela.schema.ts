@@ -1,6 +1,18 @@
 /**
  * @openapi
  * /parcelas:
+ *   get:
+ *     tags: [Parcelas]
+ *     summary: Lista todas as parcelas
+ *     responses:
+ *       200:
+ *         description: Lista de parcelas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Parcela'
  *   post:
  *     tags: [Parcelas]
  *     summary: Cria uma nova parcela

@@ -22,6 +22,15 @@ export const obterFaturaPorId = async (id: number): Promise<Fatura | null> => {
     });
 };
 
+export const listarFaturas = async (): Promise<Fatura[]> => {
+    return prisma.fatura.findMany({
+        include: {
+            parcelas: true,
+            cartao: true,
+        }
+    });
+};
+
 export const listarFaturasPorCartao = async (cartaoId: number): Promise<Fatura[]> => {
     return prisma.fatura.findMany({
         where: { cartaoId },

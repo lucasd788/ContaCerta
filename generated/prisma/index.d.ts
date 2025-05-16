@@ -8032,11 +8032,13 @@ export namespace Prisma {
   export type FaturaAvgAggregateOutputType = {
     id: number | null
     cartaoId: number | null
+    valorTotal: number | null
   }
 
   export type FaturaSumAggregateOutputType = {
     id: number | null
     cartaoId: number | null
+    valorTotal: number | null
   }
 
   export type FaturaMinAggregateOutputType = {
@@ -8044,6 +8046,7 @@ export namespace Prisma {
     cartaoId: number | null
     mesReferente: Date | null
     vencimento: Date | null
+    valorTotal: number | null
     paga: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8054,6 +8057,7 @@ export namespace Prisma {
     cartaoId: number | null
     mesReferente: Date | null
     vencimento: Date | null
+    valorTotal: number | null
     paga: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8064,6 +8068,7 @@ export namespace Prisma {
     cartaoId: number
     mesReferente: number
     vencimento: number
+    valorTotal: number
     paga: number
     createdAt: number
     updatedAt: number
@@ -8074,11 +8079,13 @@ export namespace Prisma {
   export type FaturaAvgAggregateInputType = {
     id?: true
     cartaoId?: true
+    valorTotal?: true
   }
 
   export type FaturaSumAggregateInputType = {
     id?: true
     cartaoId?: true
+    valorTotal?: true
   }
 
   export type FaturaMinAggregateInputType = {
@@ -8086,6 +8093,7 @@ export namespace Prisma {
     cartaoId?: true
     mesReferente?: true
     vencimento?: true
+    valorTotal?: true
     paga?: true
     createdAt?: true
     updatedAt?: true
@@ -8096,6 +8104,7 @@ export namespace Prisma {
     cartaoId?: true
     mesReferente?: true
     vencimento?: true
+    valorTotal?: true
     paga?: true
     createdAt?: true
     updatedAt?: true
@@ -8106,6 +8115,7 @@ export namespace Prisma {
     cartaoId?: true
     mesReferente?: true
     vencimento?: true
+    valorTotal?: true
     paga?: true
     createdAt?: true
     updatedAt?: true
@@ -8203,6 +8213,7 @@ export namespace Prisma {
     cartaoId: number
     mesReferente: Date
     vencimento: Date
+    valorTotal: number
     paga: boolean
     createdAt: Date
     updatedAt: Date
@@ -8232,6 +8243,7 @@ export namespace Prisma {
     cartaoId?: boolean
     mesReferente?: boolean
     vencimento?: boolean
+    valorTotal?: boolean
     paga?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8245,6 +8257,7 @@ export namespace Prisma {
     cartaoId?: boolean
     mesReferente?: boolean
     vencimento?: boolean
+    valorTotal?: boolean
     paga?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8256,6 +8269,7 @@ export namespace Prisma {
     cartaoId?: boolean
     mesReferente?: boolean
     vencimento?: boolean
+    valorTotal?: boolean
     paga?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8267,12 +8281,13 @@ export namespace Prisma {
     cartaoId?: boolean
     mesReferente?: boolean
     vencimento?: boolean
+    valorTotal?: boolean
     paga?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type FaturaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cartaoId" | "mesReferente" | "vencimento" | "paga" | "createdAt" | "updatedAt", ExtArgs["result"]["fatura"]>
+  export type FaturaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cartaoId" | "mesReferente" | "vencimento" | "valorTotal" | "paga" | "createdAt" | "updatedAt", ExtArgs["result"]["fatura"]>
   export type FaturaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cartao?: boolean | CartaoDefaultArgs<ExtArgs>
     parcelas?: boolean | Fatura$parcelasArgs<ExtArgs>
@@ -8296,6 +8311,7 @@ export namespace Prisma {
       cartaoId: number
       mesReferente: Date
       vencimento: Date
+      valorTotal: number
       paga: boolean
       createdAt: Date
       updatedAt: Date
@@ -8728,6 +8744,7 @@ export namespace Prisma {
     readonly cartaoId: FieldRef<"Fatura", 'Int'>
     readonly mesReferente: FieldRef<"Fatura", 'DateTime'>
     readonly vencimento: FieldRef<"Fatura", 'DateTime'>
+    readonly valorTotal: FieldRef<"Fatura", 'Float'>
     readonly paga: FieldRef<"Fatura", 'Boolean'>
     readonly createdAt: FieldRef<"Fatura", 'DateTime'>
     readonly updatedAt: FieldRef<"Fatura", 'DateTime'>
@@ -12802,6 +12819,7 @@ export namespace Prisma {
     cartaoId: 'cartaoId',
     mesReferente: 'mesReferente',
     vencimento: 'vencimento',
+    valorTotal: 'valorTotal',
     paga: 'paga',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -13419,6 +13437,7 @@ export namespace Prisma {
     cartaoId?: IntFilter<"Fatura"> | number
     mesReferente?: DateTimeFilter<"Fatura"> | Date | string
     vencimento?: DateTimeFilter<"Fatura"> | Date | string
+    valorTotal?: FloatFilter<"Fatura"> | number
     paga?: BoolFilter<"Fatura"> | boolean
     createdAt?: DateTimeFilter<"Fatura"> | Date | string
     updatedAt?: DateTimeFilter<"Fatura"> | Date | string
@@ -13431,6 +13450,7 @@ export namespace Prisma {
     cartaoId?: SortOrder
     mesReferente?: SortOrder
     vencimento?: SortOrder
+    valorTotal?: SortOrder
     paga?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13446,6 +13466,7 @@ export namespace Prisma {
     cartaoId?: IntFilter<"Fatura"> | number
     mesReferente?: DateTimeFilter<"Fatura"> | Date | string
     vencimento?: DateTimeFilter<"Fatura"> | Date | string
+    valorTotal?: FloatFilter<"Fatura"> | number
     paga?: BoolFilter<"Fatura"> | boolean
     createdAt?: DateTimeFilter<"Fatura"> | Date | string
     updatedAt?: DateTimeFilter<"Fatura"> | Date | string
@@ -13458,6 +13479,7 @@ export namespace Prisma {
     cartaoId?: SortOrder
     mesReferente?: SortOrder
     vencimento?: SortOrder
+    valorTotal?: SortOrder
     paga?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13476,6 +13498,7 @@ export namespace Prisma {
     cartaoId?: IntWithAggregatesFilter<"Fatura"> | number
     mesReferente?: DateTimeWithAggregatesFilter<"Fatura"> | Date | string
     vencimento?: DateTimeWithAggregatesFilter<"Fatura"> | Date | string
+    valorTotal?: FloatWithAggregatesFilter<"Fatura"> | number
     paga?: BoolWithAggregatesFilter<"Fatura"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Fatura"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Fatura"> | Date | string
@@ -14133,6 +14156,7 @@ export namespace Prisma {
   export type FaturaCreateInput = {
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14145,6 +14169,7 @@ export namespace Prisma {
     cartaoId: number
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14154,6 +14179,7 @@ export namespace Prisma {
   export type FaturaUpdateInput = {
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14166,6 +14192,7 @@ export namespace Prisma {
     cartaoId?: IntFieldUpdateOperationsInput | number
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14177,6 +14204,7 @@ export namespace Prisma {
     cartaoId: number
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14185,6 +14213,7 @@ export namespace Prisma {
   export type FaturaUpdateManyMutationInput = {
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14195,6 +14224,7 @@ export namespace Prisma {
     cartaoId?: IntFieldUpdateOperationsInput | number
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14993,6 +15023,7 @@ export namespace Prisma {
     cartaoId?: SortOrder
     mesReferente?: SortOrder
     vencimento?: SortOrder
+    valorTotal?: SortOrder
     paga?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15001,6 +15032,7 @@ export namespace Prisma {
   export type FaturaAvgOrderByAggregateInput = {
     id?: SortOrder
     cartaoId?: SortOrder
+    valorTotal?: SortOrder
   }
 
   export type FaturaMaxOrderByAggregateInput = {
@@ -15008,6 +15040,7 @@ export namespace Prisma {
     cartaoId?: SortOrder
     mesReferente?: SortOrder
     vencimento?: SortOrder
+    valorTotal?: SortOrder
     paga?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15018,6 +15051,7 @@ export namespace Prisma {
     cartaoId?: SortOrder
     mesReferente?: SortOrder
     vencimento?: SortOrder
+    valorTotal?: SortOrder
     paga?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15026,6 +15060,7 @@ export namespace Prisma {
   export type FaturaSumOrderByAggregateInput = {
     id?: SortOrder
     cartaoId?: SortOrder
+    valorTotal?: SortOrder
   }
 
   export type EnumTipoRelatorioFilter<$PrismaModel = never> = {
@@ -16856,6 +16891,7 @@ export namespace Prisma {
   export type FaturaCreateWithoutCartaoInput = {
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16866,6 +16902,7 @@ export namespace Prisma {
     id?: number
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16995,6 +17032,7 @@ export namespace Prisma {
     cartaoId?: IntFilter<"Fatura"> | number
     mesReferente?: DateTimeFilter<"Fatura"> | Date | string
     vencimento?: DateTimeFilter<"Fatura"> | Date | string
+    valorTotal?: FloatFilter<"Fatura"> | number
     paga?: BoolFilter<"Fatura"> | boolean
     createdAt?: DateTimeFilter<"Fatura"> | Date | string
     updatedAt?: DateTimeFilter<"Fatura"> | Date | string
@@ -17370,6 +17408,7 @@ export namespace Prisma {
   export type FaturaCreateWithoutParcelasInput = {
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17381,6 +17420,7 @@ export namespace Prisma {
     cartaoId: number
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17445,6 +17485,7 @@ export namespace Prisma {
   export type FaturaUpdateWithoutParcelasInput = {
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17456,6 +17497,7 @@ export namespace Prisma {
     cartaoId?: IntFieldUpdateOperationsInput | number
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18283,6 +18325,7 @@ export namespace Prisma {
     id?: number
     mesReferente: Date | string
     vencimento: Date | string
+    valorTotal?: number
     paga?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18346,6 +18389,7 @@ export namespace Prisma {
   export type FaturaUpdateWithoutCartaoInput = {
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18356,6 +18400,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18366,6 +18411,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     mesReferente?: DateTimeFieldUpdateOperationsInput | Date | string
     vencimento?: DateTimeFieldUpdateOperationsInput | Date | string
+    valorTotal?: FloatFieldUpdateOperationsInput | number
     paga?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

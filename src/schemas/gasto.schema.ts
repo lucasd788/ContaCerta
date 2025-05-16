@@ -1,6 +1,18 @@
 /**
  * @openapi
  * /gastos:
+ *   get:
+ *     tags: [Gastos]
+ *     summary: Lista todos os gastos
+ *     responses:
+ *       200:
+ *         description: Lista de gastos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Gasto'
  *   post:
  *     tags: [Gastos]
  *     summary: Cria um novo gasto

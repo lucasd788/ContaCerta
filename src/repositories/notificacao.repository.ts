@@ -22,6 +22,12 @@ export const obterNotificacao = async (id: number): Promise<Notificacao | null> 
     return prisma.notificacao.findUnique({ where: { id } });
 };
 
+export const listarNotificacoes = async (): Promise<Notificacao[]> => {
+    return prisma.notificacao.findMany({
+        orderBy: { dataEnvio: 'desc' }
+    });
+};
+
 export const listarNotificacoesPorUsuario = async (usuarioId: number): Promise<Notificacao[]> => {
     return prisma.notificacao.findMany({
         where: { usuarioId },

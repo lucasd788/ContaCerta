@@ -2,10 +2,10 @@ import { Router } from 'express';
 import {
     criarUsuario,
     obterUsuario,
+    listarUsuarios,
     buscarUsuarios,
     atualizarUsuario,
-    deletarUsuario,
-    listarUsuarios
+    deletarUsuario
 } from '../controllers/usuario.controller';
 
 const router = Router();

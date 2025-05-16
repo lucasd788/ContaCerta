@@ -1,6 +1,18 @@
 /**
  * @openapi
  * /notificacoes:
+ *   get:
+ *     tags: [Notificacoes]
+ *     summary: Lista todas as notificações
+ *     responses:
+ *       200:
+ *         description: Lista de notificações
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Notificacao'
  *   post:
  *     tags: [Notificacoes]
  *     summary: Cria uma nova notificação

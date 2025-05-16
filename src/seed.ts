@@ -1,5 +1,6 @@
 import { PrismaClient } from "../generated/prisma";
 import { MeioDePagamento, TipoRelatorio } from "../generated/prisma";
+import argon2 from 'argon2';
 
 const prisma = new PrismaClient();
 
@@ -99,6 +100,8 @@ async function main() {
   await prisma.categoria.deleteMany();
   await prisma.usuario.deleteMany();
 
+  const senhaHashLucas = await argon2.hash('senha123');
+  const senhaHashMaria = await argon2.hash('senha456');
   // Categorias
   const categoriaAlimentacao = await prisma.categoria.create({
     data: {
@@ -133,7 +136,7 @@ async function main() {
     data: {
       nome: "Lucas Dias",
       email: "lucasdias@email.com",
-      senha: "senha123",
+      senha: senhaHashLucas,
     },
   });
 
@@ -141,7 +144,7 @@ async function main() {
     data: {
       nome: "Maria",
       email: "maria@email.com",
-      senha: "senha456",
+      senha: senhaHashMaria,
     },
   });
 
@@ -254,6 +257,7 @@ async function main() {
         cartaoId: cartaoLucas.id,
         mesReferente: mesReferente,
         vencimento: parcela.dataVencimento,
+        valorTotal: parcela.valor,
         parcelas: {
           connect: { id: parcela.id },
         },
@@ -425,6 +429,7 @@ async function main() {
         cartaoId: cartaoLucas2.id,
         mesReferente: mesReferente,
         vencimento: parcela.dataVencimento,
+        valorTotal: parcela.valor,
         parcelas: {
           connect: { id: parcela.id },
         },
@@ -531,6 +536,7 @@ async function main() {
             cartaoId: cartaoMaria.id,
             mesReferente: mesReferente,
             vencimento: parcela.dataVencimento,
+            valorTotal: parcela.valor,
             parcelas: {
               connect: { id: parcela.id },
             },

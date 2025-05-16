@@ -13,6 +13,18 @@
  *     responses:
  *       201:
  *         description: Cartão criado
+ *   get:
+ *     tags: [Cartoes]
+ *     summary: Lista todos os cartões
+ *     responses:
+ *       200:
+ *         description: Lista de cartões
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Cartao'
  * /cartoes/usuario/{usuarioId}:
  *   get:
  *     tags: [Cartoes]

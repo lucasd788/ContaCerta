@@ -34,6 +34,7 @@ export const listarCategorias = async (): Promise<Categoria[]> => {
         }
     });
 };
+
 export const atualizarCategoria = async (id: number, data: {
     nome?: string;
     descricao?: string;

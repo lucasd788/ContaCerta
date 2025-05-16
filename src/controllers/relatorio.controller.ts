@@ -40,6 +40,15 @@ export const obterRelatorio: AsyncHandler = async (req, res, next) => {
     }
 };
 
+export const listarRelatorios: AsyncHandler = async (req, res, next) => {
+    try {
+        const relatorios = await RelatorioRepository.listarRelatorios();
+        res.json(relatorios);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const listarRelatoriosPorUsuario: AsyncHandler = async (req, res, next) => {
     try {
         const { usuarioId } = req.params;

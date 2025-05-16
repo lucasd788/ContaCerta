@@ -17,6 +17,10 @@ export const obterParcelaPorId = async (id: number): Promise<Parcela | null> => 
     return prisma.parcela.findUnique({ where: { id } });
 };
 
+export const listarParcelas = async (): Promise<Parcela[]> => {
+    return prisma.parcela.findMany();
+};
+
 export const listarParcelasPorGasto = async (gastoId: number): Promise<Parcela[]> => {
     return prisma.parcela.findMany({ where: { gastoId } });
 };

@@ -1,6 +1,18 @@
 /**
  * @openapi
  * /faturas:
+ *   get:
+ *     tags: [Faturas]
+ *     summary: Lista todas as faturas
+ *     responses:
+ *       200:
+ *         description: Lista de faturas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Fatura'
  *   post:
  *     tags: [Faturas]
  *     summary: Cria uma nova fatura
@@ -108,6 +120,9 @@
  *         vencimento:
  *           type: string
  *           format: date-time
+ *         valorTotal:
+ *           type: number
+ *           example: 1200.50
  *     FaturaInput:
  *       type: object
  *       properties:

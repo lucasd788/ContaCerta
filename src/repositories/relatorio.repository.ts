@@ -17,6 +17,12 @@ export const obterRelatorioPorId = async (id: number): Promise<Relatorio | null>
     return prisma.relatorio.findUnique({ where: { id } });
 };
 
+export const listarRelatorios = async (): Promise<Relatorio[]> => {
+    return prisma.relatorio.findMany({
+        orderBy: { dataGeracao: 'desc' }
+    });
+};
+
 export const listarRelatoriosPorUsuario = async (usuarioId: number): Promise<Relatorio[]> => {
     return prisma.relatorio.findMany({
         where: { usuarioId },
