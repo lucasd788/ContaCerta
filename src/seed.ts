@@ -244,7 +244,7 @@ async function main() {
   // Atualiza limite do cartão
   await prisma.cartao.update({
     where: { id: cartaoLucas.id },
-    data: { limiteRestante: cartaoLucas.limiteRestante - valorCelular },
+    data: { limiteRestante: { decrement: valorCelular } },
   });
 
   // Faturas para as parcelas
@@ -252,17 +252,36 @@ async function main() {
     const mesReferente = new Date(parcela.dataVencimento);
     mesReferente.setMonth(mesReferente.getMonth() - 1);
 
-    await prisma.fatura.create({
-      data: {
+    const faturaExistente = await prisma.fatura.findFirst({
+      where: {
         cartaoId: cartaoLucas.id,
         mesReferente: mesReferente,
         vencimento: parcela.dataVencimento,
-        valorTotal: parcela.valor,
-        parcelas: {
-          connect: { id: parcela.id },
-        },
       },
     });
+    if (faturaExistente) {
+      await prisma.fatura.update({
+        where: { id: faturaExistente.id },
+        data: {
+          valorTotal: faturaExistente.valorTotal + parcela.valor,
+          parcelas: {
+            connect: { id: parcela.id },
+          },
+        },
+      });
+    } else {
+      await prisma.fatura.create({
+        data: {
+          cartaoId: cartaoLucas.id,
+          mesReferente: mesReferente,
+          vencimento: parcela.dataVencimento,
+          valorTotal: parcela.valor,
+          parcelas: {
+            connect: { id: parcela.id },
+          },
+        },
+      });
+    }
   }
 
   // Débito
@@ -337,7 +356,7 @@ async function main() {
 
   // Crédito sem parcelamento
   const valorViagem = 160;
-  await prisma.gasto.create({
+  const gastoCreditoViagem = await prisma.gasto.create({
     data: {
       valor: valorViagem,
       descricao: "Viagem",
@@ -361,13 +380,53 @@ async function main() {
         },
       },
     },
+    include: {
+      parcelas: true
+    },
   });
 
   // Atualiza limite do cartão
   await prisma.cartao.update({
     where: { id: cartaoLucas2.id },
-    data: { limiteRestante: cartaoLucas2.limiteRestante - valorViagem },
+    data: { limiteRestante: { decrement: valorViagem } },
   });
+
+  // Fatura para a parcela
+  for (const parcela of gastoCreditoViagem.parcelas) {
+    const mesReferente = new Date(parcela.dataVencimento);
+    mesReferente.setMonth(mesReferente.getMonth() - 1);
+
+    const faturaExistente = await prisma.fatura.findFirst({
+      where: {
+        cartaoId: cartaoLucas2.id,
+        mesReferente: mesReferente,
+        vencimento: parcela.dataVencimento,
+      },
+    });
+    if (faturaExistente) {
+      await prisma.fatura.update({
+        where: { id: faturaExistente.id },
+        data: {
+          valorTotal: faturaExistente.valorTotal + parcela.valor,
+          parcelas: {
+            connect: { id: parcela.id },
+          },
+        },
+      });
+    } else {
+      await prisma.fatura.create({
+        data: {
+          cartaoId: cartaoLucas2.id,
+          mesReferente: mesReferente,
+          vencimento: parcela.dataVencimento,
+          valorTotal: parcela.valor,
+          parcelas: {
+            connect: { id: parcela.id },
+          },
+        },
+      });
+    }
+  }
 
   // Crédito com parcelamento 2x
   const valorMoveis = 600;
@@ -416,7 +475,7 @@ async function main() {
   // Atualiza limite do cartão
   await prisma.cartao.update({
     where: { id: cartaoLucas2.id },
-    data: { limiteRestante: cartaoLucas2.limiteRestante - valorMoveis },
+    data: { limiteRestante: { decrement: valorMoveis } },
   });
 
   // Faturas para as parcelas
@@ -424,17 +483,36 @@ async function main() {
     const mesReferente = new Date(parcela.dataVencimento);
     mesReferente.setMonth(mesReferente.getMonth() - 1);
 
-    await prisma.fatura.create({
-      data: {
+    const faturaExistente = await prisma.fatura.findFirst({
+      where: {
         cartaoId: cartaoLucas2.id,
         mesReferente: mesReferente,
         vencimento: parcela.dataVencimento,
-        valorTotal: parcela.valor,
-        parcelas: {
-          connect: { id: parcela.id },
-        },
       },
     });
+    if (faturaExistente) {
+      await prisma.fatura.update({
+        where: { id: faturaExistente.id },
+        data: {
+          valorTotal: faturaExistente.valorTotal + parcela.valor,
+          parcelas: {
+            connect: { id: parcela.id },
+          },
+        },
+      });
+    } else {
+      await prisma.fatura.create({
+        data: {
+          cartaoId: cartaoLucas2.id,
+          mesReferente: mesReferente,
+          vencimento: parcela.dataVencimento,
+          valorTotal: parcela.valor,
+          parcelas: {
+            connect: { id: parcela.id },
+          },
+        },
+      });
+    }
   }
 
   // Divisão de gasto
@@ -522,7 +600,7 @@ async function main() {
   // Atualiza limite do cartão
   await prisma.cartao.update({
     where: { id: cartaoMaria.id },
-    data: { limiteRestante: cartaoMaria.limiteRestante - 300 },
+    data: { limiteRestante: { decrement: 300 } }, // valor do gasto de crédito da Maria
   });
 
   for (const gasto of divisaoGasto.gastos) {
@@ -531,17 +609,36 @@ async function main() {
         const mesReferente = new Date(parcela.dataVencimento);
         mesReferente.setMonth(mesReferente.getMonth() - 1);
 
-        await prisma.fatura.create({
-          data: {
+        const faturaExistente = await prisma.fatura.findFirst({
+          where: {
             cartaoId: cartaoMaria.id,
             mesReferente: mesReferente,
             vencimento: parcela.dataVencimento,
-            valorTotal: parcela.valor,
-            parcelas: {
-              connect: { id: parcela.id },
-            },
           },
         });
+        if (faturaExistente) {
+          await prisma.fatura.update({
+            where: { id: faturaExistente.id },
+            data: {
+              valorTotal: faturaExistente.valorTotal + parcela.valor,
+              parcelas: {
+                connect: { id: parcela.id },
+              },
+            },
+          });
+        } else {
+          await prisma.fatura.create({
+            data: {
+              cartaoId: cartaoMaria.id,
+              mesReferente: mesReferente,
+              vencimento: parcela.dataVencimento,
+              valorTotal: parcela.valor,
+              parcelas: {
+                connect: { id: parcela.id },
+              },
+            },
+          });
+        }
       }
     }
   }
