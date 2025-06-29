@@ -13,11 +13,16 @@ import notificacaoRoutes from './routes/notificacao.route';
 import divisaoDeGastoRoutes from './routes/divisaoDeGasto.route';
 import authRoutes from './routes/auth.route';
 import { authMiddleware } from './middlewares/auth.middleware';
-
+import cors from 'cors';
 
 const app = express();
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    credentials: true
+}));
 
 app.use(express.json());
+
 const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
