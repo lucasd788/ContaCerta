@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MeioDePagamento {
+  DINHEIRO
+  PIX
+  DEBITO
+  CREDITO
+}
+
+enum TipoRelatorio {
+  MENSAL
+  ANUAL
+  PERSONALIZADO
+}
+
+model Usuario {
+  id              Int              @id @default(autoincrement())
+  nome            String
+  email           String           @unique
+  senha           String
+  gastos          Gasto[]
+  cartoes         Cartao[]
+  relatorios      Relatorio[]
+  divisoesDeGasto DivisaoDeGasto[] @relation("DivisaoDeGastoParaUsuario")
+  notificacoes    Notificacao[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now()) @updatedAt
+}
+
+model Categoria {
+  id              Int              @id @default(autoincrement())
+  nome            String
+  descricao       String?
+  gastos          Gasto[]
+  divisoesDeGasto DivisaoDeGasto[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @default(now()) @updatedAt
+}
+
+model Cartao {
+  id                   Int              @id @default(autoincrement())
+  banco                String
+  limiteTotal          Float
+  limiteRestante       Float
+  ultimosQuatroDigitos String?
+  usuario              Usuario          @relation(fields: [usuarioId], references: [id])
+  usuarioId            Int
+  gastos               Gasto[]
+  faturas              Fatura[]
+  divisoesDeGasto      DivisaoDeGasto[]
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @default(now()) @updatedAt
+}
+
+model Gasto {
+  id               Int             @id @default(autoincrement())
+  valor            Float
+  descricao        String
+  data             DateTime
+  meioPagamento    MeioDePagamento
+  usuario          Usuario         @relation(fields: [usuarioId], references: [id])
+  usuarioId        Int
+  numParcelas      Int             @default(1)
+  categoria        Categoria?      @relation(fields: [categoriaId], references: [id])
+  categoriaId      Int?
+  cartao           Cartao?         @relation(fields: [cartaoId], references: [id])
+  cartaoId         Int?
+  parcelas         Parcela[]
+  divisaoDeGasto   DivisaoDeGasto? @relation(fields: [divisaoDeGastoId], references: [id])
+  divisaoDeGastoId Int?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @default(now()) @updatedAt
+}
+
+model Parcela {
+  id             Int      @id @default(autoincrement())
+  valor          Float
+  dataVencimento DateTime
+  paga           Boolean  @default(false)
+  numeroParcela  Int
+  totalParcelas  Int
+  gasto          Gasto?   @relation(fields: [gastoId], references: [id])
+  gastoId        Int?
+  fatura         Fatura?  @relation(fields: [faturaId], references: [id])
+  faturaId       Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+}
+
+model Fatura {
+  id           Int       @id @default(autoincrement())
+  cartao       Cartao    @relation(fields: [cartaoId], references: [id])
+  cartaoId     Int
+  mesReferente DateTime
+  vencimento   DateTime
+  parcelas     Parcela[]
+  valorTotal   Float     @default(0)
+  paga         Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt
+}
+
+model Relatorio {
+  id            Int           @id @default(autoincrement())
+  usuario       Usuario       @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+  dataGeracao   DateTime
+  tipo          TipoRelatorio
+  dados         Json
+  inicioPeriodo DateTime?
+  fimPeriodo    DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model DivisaoDeGasto {
+  id            Int             @id @default(autoincrement())
+  valorTotal    Float
+  descricao     String
+  data          DateTime
+  meioPagamento MeioDePagamento
+  numParcelas   Int             @default(1)
+  categoria     Categoria?      @relation(fields: [categoriaId], references: [id])
+  categoriaId   Int?
+  cartao        Cartao?         @relation(fields: [cartaoId], references: [id])
+  cartaoId      Int?
+  gastos        Gasto[]
+  usuarios      Usuario[]       @relation("DivisaoDeGastoParaUsuario")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Notificacao {
+  id          Int      @id @default(autoincrement())
+  mensagem    String
+  dataEnvio   DateTime @default(now())
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int
+  visualizado Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
