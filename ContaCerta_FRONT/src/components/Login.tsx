@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -107,7 +106,6 @@ function Login() {
                             fontWeight: 'bold',
                             fontFamily: 'Inter',
                             fontStyle: 'normal',
-                            fontWeight: '400',
                             fontSize: '16px',
                             lineHeight: '19px',
                             color: '#757575',
@@ -142,7 +140,6 @@ function Login() {
                             fontWeight: 'bold',
                             fontFamily: 'Inter',
                             fontStyle: 'normal',
-                            fontWeight: '400',
                             fontSize: '16px',
                             lineHeight: '19px',
                             color: '#757575',
