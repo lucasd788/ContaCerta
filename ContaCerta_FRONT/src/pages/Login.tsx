@@ -14,14 +14,14 @@ import axios from "../api/axios";
 export default function Login() {
   const { setToken } = useAuth();
   const navigate = useNavigate();
-  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
   const handleLogin = async () => {
     try {
       const response = await axios.post("/auth/login", {
-        nome,
+        email,
         senha,
       });
 
@@ -47,9 +47,9 @@ export default function Login() {
     >
       <Typography variant="h4">Login ContaCerta</Typography>
       <TextField
-        label="Nome de Usuário"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
+        label="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         fullWidth
       />
       <TextField
