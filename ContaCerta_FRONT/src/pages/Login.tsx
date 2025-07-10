@@ -37,7 +37,7 @@ function Login() {
       const response = await axios.post("/auth/login", data);
       const { token } = response.data;
       setToken(token);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err: any) {
       setErro(err.response?.data?.message || "Erro ao fazer login");
     }
