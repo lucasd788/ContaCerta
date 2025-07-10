@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Fatura" ADD COLUMN     "valorTotal" DOUBLE PRECISION NOT NULL DEFAULT 0;
