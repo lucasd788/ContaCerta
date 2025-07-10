@@ -186,7 +186,7 @@ function Dashboard() {
         cartaoId: "",
         numParcelas: 1,
       });
-      // Atualiza listas
+      // atualiza listas
       const [gastosRes, cartoesRes] = await Promise.all([
         api.get(`/gastos/usuario/${userId}`),
         api.get(`/cartoes/usuario/${userId}`),
@@ -215,7 +215,7 @@ function Dashboard() {
       setSnackbarMsg("Gasto removido com sucesso!");
       setSnackbarSeverity('success');
       setOpenSnackbar(true);
-      // Atualiza listas
+      // atualiza listas
       const [gastosRes, cartoesRes] = await Promise.all([
         api.get(`/gastos/usuario/${userId}`),
         api.get("/cartoes"),
@@ -257,7 +257,7 @@ function Dashboard() {
         }}
       >
         <Typography variant="h3" sx={{ color: "#fff", fontWeight: 700, fontFamily: 'Inter' }}>
-          ContaCerta - Dashboard
+          ContaCerta
         </Typography>
       </Box>
 
